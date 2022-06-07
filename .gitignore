@@ -1,0 +1,14 @@
+
+# node modules 
+node_modules/
+
+# build 
+build/
+dist/
+
+# log files 
+logs/
+yarn-error.log*
+
+# environment files 
+.env*
