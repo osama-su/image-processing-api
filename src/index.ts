@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express'
 import morgan from 'morgan'
 import * as dotenv from 'dotenv'
+import routes from './routes/index'
 
 dotenv.config()
 
@@ -8,15 +9,13 @@ dotenv.config()
 const PORT = process.env.PORT || 3000
 // express server instance
 const app: Application = express()
-// middleware
+// HTTP request logger middleware
 app.use(morgan('dev'))
 // routes
-app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'Hello World' })
-})
+app.use('/', routes)
 // start server
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`)
+  console.log(`Server started at http://localhost:${PORT}`)
 })
 // export app for testing
 export default app
