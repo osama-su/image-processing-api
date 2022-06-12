@@ -1,12 +1,13 @@
 import supertest from 'supertest'
 import fs from 'fs'
 import app from '../index'
+import path from 'path'
 
 const request = supertest(app)
 
 describe('Test endpoint respones', () => {
   it('gets the api endpoint', async () => {
-    const response = await request.get('/api')
+    const response = await request.get('/api/img')
     expect(response.status).toBe(200)
   })
   it('gets the api/img/show endpoint', async () => {
@@ -26,9 +27,15 @@ describe('Test endpoint respones', () => {
 })
 describe('Test if image exists', () => {
   it('should return true if image exists', async () => {
-    expect(fs.existsSync('src/public/images/test.jpg')).toBe(true)
+    expect(
+      fs.existsSync(path.join(__dirname, '../../public/images', `test.jpg`))
+    ).toBe(true)
   })
   it('should return false if image does not exist', async () => {
-    expect(fs.existsSync('src/public/images/iam-not-there.jpg')).toBe(false)
+    expect(
+      fs.existsSync(
+        path.join(__dirname, '../../public/images', `I'm-not-there.jpg`)
+      )
+    ).toBe(false)
   })
 })
