@@ -2,7 +2,33 @@ import path from 'path'
 import fs from 'fs'
 import sharp from 'sharp'
 
-const resizeImage = async (filename: string, width: number, height: number) => {
+export const showImage = async (
+  filename: string,
+  width?: number,
+  height?: number
+): Promise<string> => {
+  // check if the image exists in the public/images directory
+  const imagePath: string = path.join(
+    __dirname,
+    '../../public/images',
+    `${filename}.jpg`
+  )
+  if (!fs.existsSync(imagePath)) {
+    throw new Error(`Image ${filename} does not exist.`)
+  }
+  // if no width or height is provided, return the image
+  if (!width && !height) {
+    return imagePath
+  }
+  // if width and height are provided, resize the image
+  return await resizeImage(filename, width as number, height as number)
+}
+
+export const resizeImage = async (
+  filename: string,
+  width: number,
+  height: number
+): Promise<string> => {
   // check if thumbnails directory exists and create it if not
   //   const thumbnailsDir = path.join(__dirname, '../../public/thumbnails')
   const thumbnailsDir: string = path.resolve(
@@ -38,4 +64,4 @@ const resizeImage = async (filename: string, width: number, height: number) => {
   // return output path
   return outputPath
 }
-export default resizeImage
+// export default resizeImage

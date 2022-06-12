@@ -1,5 +1,5 @@
 import express from 'express'
-import resizeImage from '../../controllers/image.controllers'
+import { resizeImage, showImage } from '../../controllers/image.controllers'
 
 const image = express.Router()
 image.get('/', (req, res) => {
@@ -12,8 +12,21 @@ image.get('/', (req, res) => {
     note: 'the image must be in the public/images directory.',
   })
 })
-image.get('/show', (req, res) => {
-  res.json({ message: 'show image' })
+image.get('/show', async (req, res) => {
+  // get the filename from the query params
+  const filename: string = req.query.filename as string
+  // get the width and height from the query params
+  const width: number = parseInt(req.query.width as string)
+  const height: number = parseInt(req.query.height as string)
+  // show the image
+  try {
+    const image = await showImage(filename, width, height)
+    res.sendFile(image)
+  } catch (e) {
+    if (e instanceof Error) {
+      res.status(404).send(e.message)
+    }
+  }
 })
 image.get('/resize', async (req, res) => {
   // get filename from querystring
