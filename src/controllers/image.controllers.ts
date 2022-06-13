@@ -1,23 +1,24 @@
 import path from 'path'
 import fs from 'fs'
-import sharp from 'sharp'
+import resize from '../modules/utils/resizeImage'
+import getImagePath from '../modules/utils/getImagePath'
+import checkThumbnailsDir from '../modules/utils/checkThumbnailsDir'
+import checkImageExist from '../modules/utils/checkImageExist'
 
 export const showImage = async (
   filename: string,
   width?: number,
   height?: number
 ): Promise<string> => {
-  // check if the image exists in the public/images directory
-  const imagePath: string = path.join(
-    __dirname,
-    '../../public/images',
-    `${filename}.jpg`
-  )
-  if (!fs.existsSync(imagePath)) {
-    throw new Error(`Image ${filename} does not exist.`)
-  }
   // if no width or height is provided, return the image
   if (!width && !height) {
+    // get the image path
+    const imagePath: string = await getImagePath(filename, 'images')
+    // if the image doesn't exist,
+    if (!fs.existsSync(imagePath)) {
+      throw new Error(`Image ${filename} does not exist.`)
+    }
+    // return the image path
     return imagePath
   }
   // if width and height are provided, resize the image
@@ -30,37 +31,31 @@ export const resizeImage = async (
   height: number
 ): Promise<string> => {
   // check if thumbnails directory exists and create it if not
-  //   const thumbnailsDir = path.join(__dirname, '../../public/thumbnails')
   const thumbnailsDir: string = path.resolve(
     __dirname,
     '../../public/thumbnails'
   )
-
-  if (!fs.existsSync(thumbnailsDir)) {
-    fs.mkdirSync(thumbnailsDir)
-  }
+  checkThumbnailsDir(thumbnailsDir)
   // check if image exists
-  const imagePath: string = path.join(
-    __dirname,
-    '../../public/thumbnails/',
-    filename + '.jpg'
+  const imagePath: string = await getImagePath(
+    filename,
+    'thumbnails',
+    width,
+    height
   )
-  if (fs.existsSync(imagePath)) {
-    throw new Error('Image already exists')
+  const outputPath: string = await getImagePath(
+    filename,
+    'thumbnails',
+    width,
+    height
+  )
+
+  if (!checkImageExist(imagePath)) {
+    // resize image
+
+    const filepath: string = await getImagePath(filename, 'images')
+    await resize(filepath, width, height, outputPath)
   }
-  // resize image
-  const outputPath: string = path.join(
-    __dirname,
-    '../../public/thumbnails/',
-    `${filename}_${width}_${height}.jpg`
-  )
-  const filepath: string = path.resolve(
-    __dirname,
-    '../../public/images/',
-    `${filename}.jpg`
-  )
-  const image = sharp(filepath)
-  await image.resize(width, height).toFile(outputPath)
   // return output path
   return outputPath
 }
