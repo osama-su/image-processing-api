@@ -14,6 +14,11 @@ It is a simple image processing API. that process stored images and resizes them
 - use the the command `yarn` to install the dependencies.
 - or use the command `npm install` to install the dependencies.
 
+## testing
+
+- use the command `yarn test` to run the tests.
+- or use the command `npm test` to run the tests.
+
 ## Build the project
 
 - use the command `yarn build` to build the project.
@@ -61,4 +66,5 @@ accepts a query parameter `filename` , `width` and `height`
 ### Example
 
 - `/api/img/show?filename=test`
+- `/api/img/show?filename=fjord&width=500&height=500`
 - `/api/img/resize?filename=test&width=100&height=100`

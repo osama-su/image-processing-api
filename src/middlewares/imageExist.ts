@@ -23,7 +23,7 @@ export const imageValidation = (
 ) => {
   const errors = validationResult(req)
   while (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() })
+    return res.status(404).json({ errors: errors.array() })
   }
   next()
 }
