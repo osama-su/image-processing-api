@@ -24,7 +24,13 @@ image.get('/show', async (req, res) => {
     res.sendFile(image)
   } catch (e) {
     if (e instanceof Error) {
-      res.status(404).send(e.message)
+      res
+        .status(404)
+        .send(
+          e.message +
+            '\n\n' +
+            'add your image name with width and height as a query params.'
+        )
     }
   }
 })
@@ -35,9 +41,21 @@ image.get('/resize', async (req, res) => {
   const width: number = parseInt(req.query.width as string)
   const height: number = parseInt(req.query.height as string)
 
-  // resize in image conttroller
-  const resizedImage = await resizeImage(filename, width, height)
-  // send resized image
-  res.sendFile(resizedImage)
+  try {
+    // resize in image conttroller
+    const resizedImage = await resizeImage(filename, width, height)
+    // send resized image
+    res.sendFile(resizedImage)
+  } catch (e) {
+    if (e instanceof Error) {
+      res
+        .status(404)
+        .send(
+          e.message +
+            '\n\n' +
+            'add your image name with width and height as a query params.'
+        )
+    }
+  }
 })
 export default image

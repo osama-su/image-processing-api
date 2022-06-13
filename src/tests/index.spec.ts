@@ -14,11 +14,20 @@ describe('Test endpoint respones', () => {
     const response = await request.get('/api/img/show?filename=test')
     expect(response.status).toBe(200)
   })
+  it('should return a 404 error if no params passed to api/img/show', async () => {
+    const response = await request.get('/api/img/show')
+    expect(response.status).toBe(404)
+  })
+
   it('gets the api/img/resize endpoint', async () => {
     const response = await request.get(
       '/api/img/resize?filename=test&width=200&height=200'
     )
     expect(response.status).toBe(200)
+  })
+  it('should return a 404 error if no params passed to api/img/resize', async () => {
+    const response = await request.get('/api/img/resize')
+    expect(response.status).toBe(404)
   })
   it('should return 404 for invalid endpoint', async () => {
     const response = await request.get('/api/foo')
