@@ -10,7 +10,7 @@
     "dev": "nodemon src/index.ts",
     "test": "tsc && jasmine",
     "build": "npx tsc",
-    "lint": "eslint .",
+    "lint": "eslint . --ext .ts,.js",
     "lint:fix": "eslint --fix ",
     "format": "prettier --write './src/**/*.ts'"
   },
