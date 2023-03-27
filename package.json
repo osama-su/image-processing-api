@@ -20,7 +20,7 @@
     "jasmine": "^4.1.0",
     "jasmine-spec-reporter": "^7.0.0",
     "morgan": "^1.10.0",
-    "sharp": "^0.30.6",
+    "sharp": "^0.31.3",
     "supertest": "^6.2.3",
     "validator": "^13.7.0"
   },
